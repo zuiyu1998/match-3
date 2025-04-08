@@ -1,12 +1,10 @@
+use bevy::prelude::*;
+use match_3::GamePlugin;
+
 fn main() {
-    println!("Hello, world!");
-}
+    let mut app = App::new();
 
-mod test {
-    #[test]
-    fn test() {
-        let a = 5;
+    app.add_plugins((DefaultPlugins, GamePlugin));
 
-        assert_eq!(a, 5);
-    }
+    app.run();
 }
