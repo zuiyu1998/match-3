@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 bevy = "=0.16.0-rc.3"
+rand = { version = "0.9" }
