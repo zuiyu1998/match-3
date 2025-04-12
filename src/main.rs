@@ -1,4 +1,11 @@
-use bevy::{prelude::*, window::WindowResolution};
+use bevy::{
+    prelude::*,
+    render::{
+        RenderPlugin,
+        settings::{Backends, RenderCreation, WgpuSettings},
+    },
+    window::WindowResolution,
+};
 use match_3::{GamePlugin, HEIGHT, WIDTH};
 
 fn main() {
@@ -14,7 +21,14 @@ fn main() {
                 }),
                 ..default()
             })
-            .set(ImagePlugin::default_nearest()),
+            .set(ImagePlugin::default_nearest())
+            .set(RenderPlugin {
+                render_creation: RenderCreation::Automatic(WgpuSettings {
+                    backends: Some(Backends::VULKAN),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }),
         GamePlugin,
     ));
 

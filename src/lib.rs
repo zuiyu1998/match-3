@@ -15,6 +15,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup);
         app.add_systems(Startup, setup_game);
+        app.add_systems(Startup, setup_game_ui);
         app.add_systems(Startup, spawn_all_pieces);
     }
 }
@@ -82,41 +83,40 @@ fn setup_game(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
     ));
-    commands.spawn(game_ui(&asset_server));
 }
 
-fn game_ui(asset_server: &AssetServer) -> impl Bundle + use<> {
+fn setup_game_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
     let top = asset_server.load("UI/Top UI v 2.png");
     let bottom = asset_server.load("UI/Bottom UI v 2.png");
 
-    (
-        Node {
+    commands
+        .spawn(Node {
             width: Val::Percent(100.0),
             height: Val::Percent(100.0),
             flex_direction: FlexDirection::Column,
             align_items: AlignItems::Center,
             justify_content: JustifyContent::SpaceBetween,
             ..default()
-        },
-        children![
-            (
+        })
+        .with_children(|builder| {
+            builder.spawn((
                 ImageNode::new(top),
                 Node {
                     width: Val::Percent(100.0),
                     height: Val::Px(192.0),
                     ..default()
                 },
-            ),
-            (
+            ));
+
+            builder.spawn((
                 ImageNode::new(bottom),
                 Node {
                     width: Val::Percent(100.0),
                     height: Val::Px(92.0),
                     ..default()
                 },
-            )
-        ],
-    )
+            ));
+        });
 }
 
 fn setup(mut commands: Commands) {
