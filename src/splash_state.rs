@@ -1,12 +1,14 @@
 use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
 
-use crate::AppState;
+use crate::{AppState, PieceAssets};
 
 pub struct SplashStatePlugin;
 
 fn get_loading_state() -> LoadingState<AppState> {
-    LoadingState::new(AppState::Splash).continue_to_state(AppState::Game)
+    LoadingState::new(AppState::Splash)
+        .continue_to_state(AppState::Game)
+        .load_collection::<PieceAssets>()
 }
 
 impl Plugin for SplashStatePlugin {
