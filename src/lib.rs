@@ -1,3 +1,9 @@
+mod splash_state;
+mod state;
+
+pub use splash_state::*;
+pub use state::*;
+
 use bevy::prelude::*;
 use rand::{Rng, rng};
 
@@ -13,10 +19,13 @@ pub struct GamePlugin;
 
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup);
-        app.add_systems(Startup, setup_game);
-        app.add_systems(Startup, setup_game_ui);
-        app.add_systems(Startup, spawn_all_pieces);
+        app.init_state::<AppState>()
+            .add_plugins(SplashStatePlugin)
+            .add_systems(Startup, setup)
+            .add_systems(
+                OnEnter(AppState::Game),
+                (setup_game, setup_game_ui, spawn_all_pieces),
+            );
     }
 }
 
